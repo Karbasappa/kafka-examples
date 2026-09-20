@@ -33,4 +33,13 @@ public class KafkaBatchConsumerService {
             e.printStackTrace();
         }
     }
+
+    /* if you don't want yml configuration
+    @KafkaListener(
+    topics = "kk-with-3-part",
+    groupId = "my-batch-consumer-group",
+    containerFactory = "kafkaBatchListenerContainerFactory" // Binds explicitly to a batch factory bean
+)
+public void receiveBatch(List<ConsumerRecord<String, String>> records, Acknowledgment ack) { ... }
+     */
 }
