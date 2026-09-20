@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: kafka-examples
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      my-first-consumer:
+        group-id: my-first-consumer-group
+        enable-ato-commit: false
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      my-second-consumer:
+        group-id: my-second-consumer-group
+        enable-auto-commit: false
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      my-third-consumer:
+        group-id: my-batch-consumer-group
+        enable-auto-commit: false
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+          # MAX BATCH SIZE: The maximum number of records pulled in a single poll loop
+        max-poll-records: 100
+        auto-offset-reset: earliest
+    listener:
+      # CRITICAL STEP 1: Enable batch listening mode
+      type: batch
+      # CRITICAL STEP 2: Commit the entire batch offset together once the method finishes
+      ack-mode: manual_immediate
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: "all"
+      properties:
+        enable.idempotency: true
+        max.in.flight.requests.per.connection: 5
+
+
+server:
+  port: 8081
